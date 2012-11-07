@@ -1,9 +1,5 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', function($scope) {
-  $scope.awesomeThings = [
-    'HTML5 Boilerplate',
-    'AngularJS',
-    'Testacular'
-  ];
+bibleqnaApp.controller('MainCtrl', function($scope, Verse) {
+  $scope.verses = Verse.query();
 });
