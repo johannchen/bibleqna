@@ -3,8 +3,27 @@
   <div class="span6">
     <ul class="thumbnails">
       <li class="span6 thumbnail" ng-repeat="verse in verses">
-      <a href="#"><strong>{{verse._id}} {{verse.question}}</strong></a><br />
-      {{verse.answer}}
+      <div class="css-treeview">
+        <ul>
+          <li>
+          <input type="checkbox" id="item-{{$index}}" />
+            <label for="item-{{$index}}">{{verse._id}}</label>
+            <ul>
+              <li>
+                <input type="checkbox" id="item-0-{{$index}}"/>
+                <label for="item-0-{{$index}}">{{verse.question}}</label>
+                <ul>
+                  <li>{{verse.answer}}</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      </li>
+      <li class="span6 thumbnail">
+        <textarea rows="3" class="input-xlarge"></textarea><br />
+        <button class="btn btn-primary">Submit Question</button>
       </li>
     </ul>
   </div>
