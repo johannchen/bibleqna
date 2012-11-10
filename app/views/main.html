@@ -6,7 +6,7 @@
       <div class="css-treeview">
         <ul>
           <li>
-          <input type="checkbox" id="item-{{$index}}" />
+          <input type="checkbox" checked="checked" id="item-{{$index}}" />
             <label for="item-{{$index}}">{{verse._id}}</label>
             <ul>
               <li>
@@ -14,6 +14,10 @@
                 <label for="item-0-{{$index}}">{{verse.question}}</label>
                 <ul>
                   <li>{{verse.answer}}</li>
+                  <li>
+                    <textarea rows="3" class="input-xlarge" placeholder="Answer" ng-model="verse.answer"></textarea>
+                    <button class="btn btn-primary" ng-click="answer(verse)">Submit Answer</button>
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -22,8 +26,13 @@
       </div>
       </li>
       <li class="span6 thumbnail">
-        <textarea rows="3" class="input-xlarge"></textarea><br />
-        <button class="btn btn-primary">Submit Question</button>
+      <form name="newVerseForm">
+        <div class="controll-group">
+          <input type="text" placeholder="Verse Reference" ng-model="verse._id" />
+        </div>
+        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="verse.question"></textarea>
+        <button class="btn btn-primary" ng-click="save()">Submit Question</button>
+      </form>
       </li>
     </ul>
   </div>

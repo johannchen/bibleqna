@@ -21,11 +21,9 @@
   user-select: none;
 }
 
-/* ? on + */
 .css-treeview input + label + ul
 { margin: 0 0 0 22px; }
 
-/* ? on ~ */
 .css-treeview input ~ ul
 { display: none; }
 
@@ -40,15 +38,15 @@
   display: block;
 }
 
-/* ? on before 
- * todo: use bootstrap icon */
+/* todo: use bootstrap icon */
 .css-treeview label,
 .css-treeview label::before
 { 
   cursor: pointer; 
-  background: url("/icons.png") no-repeat;
+  /* background: url("/icons.png") no-repeat; */
 }
 
+/*
 .css-treeview label
 { background-position: 18px 0; }
 .css-treeview label::before 
@@ -64,9 +62,7 @@
 {
   background-position: 0 -16px; 
 }
-
-
-
+*/
 
 
 /* webkit adjacent element selector bugfix */
