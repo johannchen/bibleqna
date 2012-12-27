@@ -6,11 +6,10 @@ bibleqnaApp.factory('Verse', function($resource) {
       update: { method: 'PUT' }
     }
   );
-/*
+
   Verse.prototype.update = function(cb) {
-    return Verse.update({id: this._id},
+    return Verse.update({id: this._id.$oid},
       angular.extend({}, this, {_id:undefined}), cb);
   };
-*/
   return Verse;
 });

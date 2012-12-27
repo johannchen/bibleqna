@@ -7,15 +7,15 @@
         <ul>
           <li>
           <input type="checkbox" checked="checked" id="item-{{$index}}" />
-            <label for="item-{{$index}}">{{verse._id}}</label>
+            <label for="item-{{$index}}">{{verse.verse}}</label>
             <ul>
               <li>
                 <input type="checkbox" id="item-0-{{$index}}"/>
                 <label for="item-0-{{$index}}">{{verse.question}}</label>
                 <ul>
-                  <li>{{verse.answer}}</li>
+                  <li ng-repeat="answer in verse.answers">{{answer}}</li>
                   <li>
-                    <textarea rows="3" class="input-xlarge" placeholder="Answer" ng-model="verse.answer"></textarea>
+                    <textarea rows="3" class="input-xlarge" placeholder="New Answer" ng-model="newAnswer"></textarea>
                     <button class="btn btn-primary" ng-click="answer(verse)">Submit Answer</button>
                   </li>
                 </ul>
@@ -28,7 +28,7 @@
       <li class="span6 thumbnail">
       <form name="newVerseForm">
         <div class="controll-group">
-          <input type="text" placeholder="Verse Reference" ng-model="verse._id" />
+          <input type="text" placeholder="Verse Reference" ng-model="verse.verse" />
         </div>
         <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="verse.question"></textarea>
         <button class="btn btn-primary" ng-click="save()">Submit Question</button>

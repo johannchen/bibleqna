@@ -11,10 +11,17 @@ bibleqnaApp.controller('MainCtrl', function($scope, Verse) {
   };
 
   $scope.answer = function(verse) {
+    if (verse.answers === undefined) {verse.answers = [];}
+    verse.answers.push(this.newAnswer);
+    verse.update(function() {
+      console.log("answer question");
+    });
+    this.newAnswer = "";
+
    // save in mongo
-   console.log("id: " + verse._id);
-   var dbVerse = Verse.get({id: verse._id});
-   //verse.update(); 
-   console.log(dbVerse);
+   //console.log("id: " + verse._id.$oid);
+   //var dbVerse = Verse.get({id: verse._id.$oid});
+   //dbVerse.update(); 
+   //console.log(dbVerse);
   };
 });
