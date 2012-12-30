@@ -1,22 +1,61 @@
 <div class="row">
   <div class="span6"></div>
   <div class="span6">
+    <button class="btn" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
     <ul class="thumbnails">
+      <li class="span6 thumbnail" ng-show="questionFormShowed">
+      <form name="newVerseForm">
+        <div class="controll-group">
+          <input type="text" placeholder="Verse Reference" ng-model="verse.verse" />
+        </div>
+        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="verse.question"></textarea>
+        <button class="btn btn-primary" ng-click="submitQuestion()">Submit Question</button>
+        <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
+      </form>
+      </li>
       <li class="span6 thumbnail" ng-repeat="verse in verses">
-      <div class="css-treeview">
+        <div ng-init="editMode=false" ng-show="editMode">
+          <form name="editQustionForm">
+            <div class="controll-group">
+              <input type="text" ng-model="verse.verse" />
+            </div>
+            <textarea rows="3" class="span5 input-xlarge" ng-model="verse.question"></textarea>
+            <button class="btn btn-primary" ng-click="updateQuestion()">Update Question</button>
+            <button class="btn" ng-click="editMode=false">Cancel</button>
+          </form>
+        </div>
+      <div class="css-treeview" ng-hide="editMode">
         <ul>
           <li>
           <input type="checkbox" checked="checked" id="item-{{$index}}" />
-            <label for="item-{{$index}}">{{verse.verse}}</label>
+            <label for="item-{{$index}}">
+              {{verse.verse}}
+              <i class="icon-edit pointer" title="edit" ng-click="editMode=true"></i>
+            </label>
             <ul>
               <li>
                 <input type="checkbox" id="item-0-{{$index}}"/>
                 <label for="item-0-{{$index}}">{{verse.question}}</label>
                 <ul>
-                  <li ng-repeat="answer in verse.answers">{{answer}}</li>
-                  <li>
-                    <textarea rows="3" class="input-xlarge" placeholder="New Answer" ng-model="newAnswer"></textarea>
-                    <button class="btn btn-primary" ng-click="answer(verse)">Submit Answer</button>
+                  <li ng-repeat="answer in verse.answers">
+                    <div ng-hide="editAnswerMode">
+                      {{answer}}
+                      <i class="icon-edit pointer" title="edit answer" ng-click="editAnswerMode=true"></i>
+                    </div>
+                    <div ng-show="editAnswerMode" ng-init="editedAnswer=answer">
+                      <textarea rows="3" class="span4 input-xlarge" ng-model="editedAnswer"></textarea>
+        
+                      <button class="btn btn-primary" ng-click="updateAnswer()">Update Answer</button>
+                      <button class="btn btn-danger" ng-click="removeAnswer()">Remove</button>
+                      <button class="btn" ng-click="editAnswerMode=false">Cancel</button>  
+                    </div>
+                  </li>
+                  <li ng-init="answerFormShowed=false" ng-hide="answerFormShowed"><a ng-click="answerFormShowed=true">add answer</a></li>
+                  <li ng-show="answerFormShowed">
+                    <textarea rows="3" class="span4 input-xlarge" placeholder="New Answer" ng-model="newAnswer"></textarea>
+                    <br />
+                    <button class="btn btn-primary" ng-click="submitAnswer()">Submit Answer</button>
+                    <button class="btn" ng-click="answerFormShowed=false">Cancel</button>
                   </li>
                 </ul>
               </li>
@@ -25,15 +64,7 @@
         </ul>
       </div>
       </li>
-      <li class="span6 thumbnail">
-      <form name="newVerseForm">
-        <div class="controll-group">
-          <input type="text" placeholder="Verse Reference" ng-model="verse.verse" />
-        </div>
-        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="verse.question"></textarea>
-        <button class="btn btn-primary" ng-click="save()">Submit Question</button>
-      </form>
-      </li>
+      
     </ul>
   </div>
 </div>
