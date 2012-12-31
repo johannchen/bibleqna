@@ -1,7 +1,13 @@
 <div class="row">
   <div class="span6"></div>
   <div class="span6">
-    <button class="btn" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
+    <div class="menu">
+      <select ng-model="book" ng-options="b.name for b in bible"></select>
+      <select ng-model="chapter" ng-options="n for n in [] | range:1:book.chapter"></select>
+      <button class="btn" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
+
+
+    </div>
     <ul class="thumbnails">
       <li class="span6 thumbnail" ng-show="questionFormShowed">
       <form name="newVerseForm">
@@ -30,7 +36,7 @@
           <input type="checkbox" checked="checked" id="item-{{$index}}" />
             <label for="item-{{$index}}">
               {{verse.verse}}
-              <i class="icon-edit pointer" title="edit" ng-click="editMode=true"></i>
+              <i class="icon-edit pointer" title="edit" ng-click="editMode=true" ng-hide="verse.answers"></i>
             </label>
             <ul>
               <li>
