@@ -2,7 +2,9 @@
 
 bibleqnaApp.factory('Verse', function($resource) {
   var Verse = $resource('https://api.mongolab.com/api/1/databases/bible/collections/verses/:id',
-    { apiKey: '50983e52e4b0200e9ba50a55' }, {
+    { apiKey: '50983e52e4b0200e9ba50a55'
+    }, 
+    {
       update: { method: 'PUT' }
     }
   );

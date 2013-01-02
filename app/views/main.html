@@ -1,25 +1,33 @@
 <div class="row">
+  <div class="span6">
+    <form class="form-inline">
+      <select class="span2" ng-model="book" ng-options="b.name for b in bible" ng-change="newBook()"></select>
+      <select class="span1" ng-show="book" ng-model="chapter" ng-options="n for n in [] | range:1:book.chapter" ng-change="getQuestions()"></select>
+      <span ng-show="chapter">
+        <button class="btn" ng-click="prevChapter()">Prev</button>
+        <button class="btn" ng-click="nextChapter()">Next</button>
+      </span>
+    </form>
+  </div>
+  <div class="span6">
+    <button class="btn" ng-show="chapter" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
+  </div>
+</div>
+<div class="row">
   <div class="span6"></div>
   <div class="span6">
-    <div class="menu">
-      <select ng-model="book" ng-options="b.name for b in bible"></select>
-      <select ng-model="chapter" ng-options="n for n in [] | range:1:book.chapter"></select>
-      <button class="btn" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
-
-
-    </div>
     <ul class="thumbnails">
       <li class="span6 thumbnail" ng-show="questionFormShowed">
-      <form name="newVerseForm">
+      <form name="newQuestionForm">
         <div class="controll-group">
-          <input type="text" placeholder="Verse Reference" ng-model="verse.verse" />
+          {{bookChapter}}: <input type="text" placeholder="verse numbers" ng-model="verseNumbers" value="test" />
         </div>
-        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="verse.question"></textarea>
+        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question"></textarea>
         <button class="btn btn-primary" ng-click="submitQuestion()">Submit Question</button>
         <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
       </form>
       </li>
-      <li class="span6 thumbnail" ng-repeat="verse in verses">
+      <li class="span6 thumbnail" ng-repeat="verse in verses | orderBy:'verse'">
         <div ng-init="editMode=false" ng-show="editMode">
           <form name="editQustionForm">
             <div class="controll-group">
@@ -47,6 +55,7 @@
                     <div ng-hide="editAnswerMode">
                       {{answer}}
                       <i class="icon-edit pointer" title="edit answer" ng-click="editAnswerMode=true"></i>
+                      <i class="icon-thumbs-up pointer" title="like answer" ng-click="likeAnswer()"></i>
                     </div>
                     <div ng-show="editAnswerMode" ng-init="editedAnswer=answer">
                       <textarea rows="3" class="span4 input-xlarge" ng-model="editedAnswer"></textarea>
