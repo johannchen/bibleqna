@@ -3,17 +3,25 @@
 bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, ESV) {
   //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
-
-  $scope.newBook = function() {
-    $scope.verses = [];
-    $scope.chapter = 0;
-  };
+  // default book and chapter
+  //$scope.book = {name: "John", chapter: 21};
+  $scope.book = $scope.bible[42];
+  $scope.chapter = 1;
+  $scope.bookChapter = "John 1";
+  $scope.verses = Verse.query(
+    {q: '{"verse": {$regex: "^John 1", $options: "i"}}'}
+  );
 
   $scope.getQuestions = function() {
     $scope.bookChapter = $scope.book.name + " " + $scope.chapter;
     $scope.verses = Verse.query(
       {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
     );
+  };
+
+  $scope.changeBook = function() {
+    $scope.chapter = 1;
+    $scope.getQuestions();
   };
 
   $scope.prevChapter = function() {
@@ -27,8 +35,13 @@ bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, ESV) {
   };
 
   $scope.submitQuestion = function() {
+    if ($scope.verseNumbers === undefined) {
+      var newVerse = $scope.bookChapter;
+    } else {
+      var newVerse = $scope.bookChapter + ":" + $scope.verseNumbers;
+    }
     var newQuestion = {
-      verse: $scope.bookChapter + ":" + $scope.verseNumbers,
+      verse: newVerse,
       question: $scope.question
     }
     // save in mongo
