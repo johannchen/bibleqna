@@ -1,27 +1,57 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, ESV) {
+bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, Storage) {
+  /*
+  function findIndexByKeyValue: finds "key" key inside "ob" object that equals "value" value
+  example: findIndexByKeyValue(students, 'name', "Jim");
+  object: students = [
+     {name: 'John', age: 100, profession: 'Programmer'},
+     {name: 'Jim', age: 50, profession: 'Carpenter'}
+  ];
+  would find the index of "Jim" and return 1
+  */
+   
+  function findIndexByKeyValue(obj, key, value)
+  {
+      for (var i = 0; i < obj.length; i++) {
+          if (obj[i][key] == value) {
+              return i;
+          }
+      }
+      return null;
+  }
   //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
   // default book and chapter
   //$scope.book = {name: "John", chapter: 21};
-  $scope.book = $scope.bible[42];
-  $scope.chapter = 1;
-  $scope.bookChapter = "John 1";
+  //$scope.book = $scope.bible[42];
+  var bookIndex = findIndexByKeyValue($scope.bible, 'name', Storage.getObject('book'));
+  $scope.book = $scope.bible[bookIndex];
+  $scope.chapter = Storage.getObject('chapter');
+  console.log("storage book: " + $scope.book);
+  if($scope.book === undefined) {
+    $scope.book = $scope.bible[42];
+    $scope.chapter = 1;
+    Storage.saveObject($scope.book.name, 'book');
+    Storage.saveObject(1, 'chapter');
+  }  
+  $scope.bookChapter = $scope.book.name + " " + $scope.chapter;;
   $scope.verses = Verse.query(
-    {q: '{"verse": {$regex: "^John 1", $options: "i"}}'}
+    {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
   );
-
+  
   $scope.getQuestions = function() {
     $scope.bookChapter = $scope.book.name + " " + $scope.chapter;
     $scope.verses = Verse.query(
       {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
     );
+    Storage.saveObject($scope.chapter, 'chapter');
   };
 
   $scope.changeBook = function() {
     $scope.chapter = 1;
     $scope.getQuestions();
+    Storage.saveObject($scope.book.name, 'book');
   };
 
   $scope.prevChapter = function() {
