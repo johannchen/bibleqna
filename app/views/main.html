@@ -41,15 +41,12 @@
       <div class="css-treeview" ng-hide="editMode">
         <ul>
           <li>
-          <input type="checkbox" checked="checked" id="item-{{$index}}" />
+          <input type="checkbox" id="item-{{$index}}" />
             <label for="item-{{$index}}">
-              {{verse.verse}}
+              {{verse.verse}}<br />
+              {{verse.question}}
               <i class="icon-edit pointer" title="edit" ng-click="editMode=true" ng-show="verse.answers == undefined || verse.answers.length == 0"></i>
             </label>
-            <ul>
-              <li>
-                <input type="checkbox" id="item-0-{{$index}}"/>
-                <label for="item-0-{{$index}}">{{verse.question}}</label>
                 <ul>
                   <li ng-repeat="answer in verse.answers">
                     <div ng-hide="editAnswerMode">
@@ -74,8 +71,6 @@
                     </form>
                   </li>
                 </ul>
-              </li>
-            </ul>
           </li>
         </ul>
       </div>
