@@ -1,31 +1,13 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'Storage', function($scope, Verse, Bible, Storage) {
-  /*
-  function findIndexByKeyValue: finds "key" key inside "ob" object that equals "value" value
-  example: findIndexByKeyValue(students, 'name', "Jim");
-  object: students = [
-     {name: 'John', age: 100, profession: 'Programmer'},
-     {name: 'Jim', age: 50, profession: 'Carpenter'}
-  ];
-  would find the index of "Jim" and return 1
-  */
-   
-  function findIndexByKeyValue(obj, key, value)
-  {
-      for (var i = 0; i < obj.length; i++) {
-          if (obj[i][key] == value) {
-              return i;
-          }
-      }
-      return null;
-  }
+bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Verse, Bible, ESV, Storage, Util) {
+  
   //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
   // default book and chapter
   //$scope.book = {name: "John", chapter: 21};
   //$scope.book = $scope.bible[42];
-  var bookIndex = findIndexByKeyValue($scope.bible, 'name', Storage.getObject('book'));
+  var bookIndex = Util.findIndexByKeyValue($scope.bible, 'name', Storage.getObject('book'));
   $scope.book = $scope.bible[bookIndex];
   $scope.chapter = Storage.getObject('chapter');
   console.log("storage book: " + $scope.book);
@@ -39,6 +21,7 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'Storage', funct
   $scope.verses = Verse.query(
     {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
   );
+  $scope.passage = ESV.get({passage:$scope.bookChapter});
 
   $scope.startVerseNumber = function(question) {
     var verseNumber = question.verse.match(/:(\d+)/);
@@ -54,6 +37,7 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'Storage', funct
     $scope.verses = Verse.query(
       {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
     );
+    $scope.passage = ESV.get({passage:$scope.bookChapter});
     Storage.saveObject($scope.chapter, 'chapter');
   };
 
