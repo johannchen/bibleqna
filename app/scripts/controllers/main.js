@@ -1,6 +1,6 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, Storage) {
+bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'Storage', function($scope, Verse, Bible, Storage) {
   /*
   function findIndexByKeyValue: finds "key" key inside "ob" object that equals "value" value
   example: findIndexByKeyValue(students, 'name', "Jim");
@@ -145,4 +145,4 @@ bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, Storage) {
     this.editAnswerMode = false;
   };
 
-});
+}]);
