@@ -20,14 +20,14 @@
       <li class="span6 thumbnail" ng-show="questionFormShowed">
       <form name="newQuestionForm">
         <div class="controll-group">
-          {{bookChapter}}: <input type="text" placeholder="verse numbers" ng-model="verseNumbers" value="test" />
+          {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
         </div>
         <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
         <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
         <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
       </form>
       </li>
-      <li class="span6 thumbnail" ng-repeat="verse in verses | orderBy:'verse'">
+      <li class="span6 thumbnail" ng-repeat="verse in verses | orderBy:startVerseNumber">
         <div ng-init="editMode=false" ng-show="editMode">
           <form name="editQustionForm">
             <div class="controll-group">

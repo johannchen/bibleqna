@@ -39,6 +39,15 @@ bibleqnaApp.controller('MainCtrl', function($scope, Verse, Bible, Storage) {
   $scope.verses = Verse.query(
     {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
   );
+
+  $scope.startVerseNumber = function(question) {
+    var verseNumber = question.verse.match(/:(\d+)/);
+    if( verseNumber == null ) {
+      return 1;
+    } else {      
+      return parseInt(verseNumber[1]);
+    }
+  }
   
   $scope.getQuestions = function() {
     $scope.bookChapter = $scope.book.name + " " + $scope.chapter;
