@@ -1,12 +1,13 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Verse, Bible, ESV, Storage, Util) {
+bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Question, Bible, ESV, Storage, Util) {
   
   //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
   // default book and chapter
   //$scope.book = {name: "John", chapter: 21};
   //$scope.book = $scope.bible[42];
+  
   var bookIndex = Util.findIndexByKeyValue($scope.bible, 'name', Storage.getObject('book'));
   $scope.book = $scope.bible[bookIndex];
   $scope.chapter = Storage.getObject('chapter');
@@ -18,13 +19,19 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage'
     Storage.saveObject(1, 'chapter');
   }  
   $scope.bookChapter = $scope.book.name + " " + $scope.chapter;;
-  $scope.verses = Verse.query(
-    {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
+  /*
+  $scope.questions = Question.query(
+    {q: '{"question": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
   );
-  $scope.passage = ESV.get({passage:$scope.bookChapter});
+  */
+  $scope.questions = Question.query({id: $scope.bookChapter});
+  //$scope.passage = ESV.get({passage:$scope.bookChapter});
 
   $scope.startVerseNumber = function(question) {
-    var verseNumber = question.verse.match(/:(\d+)/);
+    var verseNumber = null;
+    if( question.verse != undefined ) {
+      verseNumber = question.verse.match(/:(\d+)/);
+    }
     if( verseNumber == null ) {
       return 1;
     } else {      
@@ -34,10 +41,13 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage'
   
   $scope.getQuestions = function() {
     $scope.bookChapter = $scope.book.name + " " + $scope.chapter;
-    $scope.verses = Verse.query(
-      {q: '{"verse": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
+    /*
+    $scope.questions = Question.query(
+      {q: '{"question": {$regex: "^' + $scope.bookChapter + '.*", $options: "i"}}'}
     );
-    $scope.passage = ESV.get({passage:$scope.bookChapter});
+   */
+    $scope.questions = Question.query({id: $scope.bookChapter});
+    //$scope.passage = ESV.get({passage:$scope.bookChapter});
     Storage.saveObject($scope.chapter, 'chapter');
   };
 
@@ -59,17 +69,16 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage'
 
   $scope.submitQuestion = function() {
     if ($scope.verseNumbers === undefined) {
-      var newVerse = $scope.bookChapter;
+      var newQuestion = $scope.bookChapter;
     } else {
-      var newVerse = $scope.bookChapter + ":" + $scope.verseNumbers;
+      var newQuestion = $scope.bookChapter + ":" + $scope.verseNumbers;
     }
     var newQuestion = {
-      verse: newVerse,
-      question: $scope.question
+      question: newQuestion,
+      verse: $scope.verse
     }
-    // save in mongo
-    Verse.save(newQuestion, function(verse) {
-      $scope.verses.unshift(verse);
+    Question.save(newQuestion, function(question) {
+      $scope.questions.unshift(question);
     });
     $scope.verseNumbers = "";
     $scope.question = "";
@@ -77,52 +86,52 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Verse', 'Bible', 'ESV', 'Storage'
   };
 
   $scope.updateQuestion = function() {
-    var verse = this.verse;
-    verse.update(function() {
-      console.log("update question");
+    var question = this.question;
+    question.update(function() {
+      console.log("updated question");
     });
     this.editMode = false;
   };
 
   $scope.submitAnswer = function() {
-    var verse = this.verse;
-    if (verse.answers === undefined) {verse.answers = [];}
-    verse.answers.push(this.newAnswer);
-    verse.update(function() {
+    var question = this.question;
+    if (question.answers === undefined) {question.answers = [];}
+    question.answers.push(this.newAnswer);
+    question.update(function() {
       console.log("answer question");
     });
     this.newAnswer = "";
     this.answerFormShowed = false;
 
    // save in mongo
-   //console.log("id: " + verse._id.$oid);
-   //var dbVerse = Verse.get({id: verse._id.$oid});
-   //dbVerse.update(); 
-   //console.log(dbVerse);
+   //console.log("id: " + question._id.$oid);
+   //var dbQuestion = Question.get({id: question._id.$oid});
+   //dbQuestion.update(); 
+   //console.log(dbQuestion);
   };
 
   $scope.removeAnswer = function() {
     if (confirm("Are you sure to remove this answer?")) {
-      // get verse from parent scope.
-      var verse = this.$parent.verse;
-      var index = verse.answers.indexOf(this.answer);
+      // get question from parent scope.
+      var question = this.$parent.question;
+      var index = question.answers.indexOf(this.answer);
       // console.log("answer index: " + index);
-      verse.answers.splice(index, 1);
-      verse.update(function() {
+      question.answers.splice(index, 1);
+      question.update(function() {
         console.log("remove answer");
       });
     };
   };
 
   $scope.updateAnswer = function() {
-    // get verse from parent scope.
-    var verse = this.$parent.verse;
+    // get question from parent scope.
+    var question = this.$parent.question;
     
-    var index = verse.answers.indexOf(this.answer);    
-    verse.answers[index] = this.editedAnswer;
+    var index = question.answers.indexOf(this.answer);    
+    question.answers[index] = this.editedAnswer;
     //this.answer = this.editedAnswer;
     
-    verse.update(function() {
+    question.update(function() {
       console.log("update answer");
     });
 

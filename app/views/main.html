@@ -29,13 +29,13 @@
         <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
       </form>
       </li>
-      <li class="span6 thumbnail" ng-repeat="verse in verses | orderBy:startVerseNumber">
+      <li class="span6 thumbnail" ng-repeat="question in questions | orderBy:startVerseNumber">
         <div ng-init="editMode=false" ng-show="editMode">
           <form name="editQustionForm">
             <div class="controll-group">
-              <input type="text" ng-model="verse.verse" />
+              <input type="text" ng-model="question.verse" />
             </div>
-            <textarea rows="3" class="span5 input-xlarge" ng-model="verse.question"></textarea>
+            <textarea rows="3" class="span5 input-xlarge" ng-model="question.question"></textarea>
             <button class="btn btn-primary" ng-click="updateQuestion()">Update Question</button>
             <button class="btn" ng-click="editMode=false">Cancel</button>
           </form>
@@ -45,15 +45,15 @@
           <li>
           <input type="checkbox" id="item-{{$index}}" />
             <label for="item-{{$index}}">
-              {{verse.verse}}<br />
-              {{verse.question}}
-              <i class="icon-edit pointer" title="edit" ng-click="editMode=true" ng-show="verse.answers == undefined || verse.answers.length == 0"></i>
+              {{question.verse}}<br />
+              {{question.question}}
+              <i class="icon-edit pointer" title="improve question" ng-click="editMode=true" ng-show="question.answers == undefined || question.answers.length == 0"></i>
             </label>
                 <ul>
-                  <li ng-repeat="answer in verse.answers">
+                  <li ng-repeat="answer in question.answers">
                     <div ng-hide="editAnswerMode">
                       {{answer}}
-                      <i class="icon-edit pointer" title="edit answer" ng-click="editAnswerMode=true"></i>                     
+                      <i class="icon-edit pointer" title="improve answer" ng-click="editAnswerMode=true"></i>                     
                     </div>
                     <div ng-show="editAnswerMode" ng-init="editedAnswer=answer">
                       <textarea rows="3" class="span5 input-xlarge" ng-model="editedAnswer"></textarea>
