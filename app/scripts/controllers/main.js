@@ -1,6 +1,6 @@
 'use strict';
 
-bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Question, Bible, ESV, Storage, Util) {
+bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Question, Answer, Bible, ESV, Storage, Util) {
   
   //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
@@ -96,45 +96,47 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Bible', 'ESV', 'Stora
   $scope.submitAnswer = function() {
     var question = this.question;
     if (question.answers === undefined) {question.answers = [];}
-    question.answers.push(this.newAnswer);
-    question.update(function() {
+    var newAnswer = this.newAnswer;
+    newAnswer.question_id = question.id;
+    Answer.save(newAnswer, function(answer) {
+      question.answers.push(answer);
       console.log("answer question");
     });
-    this.newAnswer = "";
+    this.newAnswer = {};
     this.answerFormShowed = false;
 
-   // save in mongo
-   //console.log("id: " + question._id.$oid);
-   //var dbQuestion = Question.get({id: question._id.$oid});
-   //dbQuestion.update(); 
-   //console.log(dbQuestion);
   };
 
   $scope.removeAnswer = function() {
     if (confirm("Are you sure to remove this answer?")) {
+      var answer = this.answer;
       // get question from parent scope.
       var question = this.$parent.question;
-      var index = question.answers.indexOf(this.answer);
+      var index = question.answers.indexOf(answer);
       // console.log("answer index: " + index);
       question.answers.splice(index, 1);
-      question.update(function() {
+      Answer.delete(answer, function() {
         console.log("remove answer");
       });
     };
   };
 
   $scope.updateAnswer = function() {
-    // get question from parent scope.
-    var question = this.$parent.question;
-    
-    var index = question.answers.indexOf(this.answer);    
-    question.answers[index] = this.editedAnswer;
-    //this.answer = this.editedAnswer;
-    
-    question.update(function() {
+    /*
+    var answer = this.answer;
+    answer.answer = this.editedAnswer;
+    answer.update(function() {
       console.log("update answer");
     });
-
+  */
+    var editedAnswer = this.editedAnswer;
+    var answer = Answer.get({id:this.answer.id}, function() {
+      answer.answer = editedAnswer;
+      answer.update(function() {
+        console.log("update answer");
+      });
+    });
+    this.answer.answer = editedAnswer;
     this.editAnswerMode = false;
   };
 

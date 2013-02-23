@@ -52,10 +52,10 @@
                 <ul>
                   <li ng-repeat="answer in question.answers">
                     <div ng-hide="editAnswerMode">
-                      {{answer}}
+                      {{answer.answer}}
                       <i class="icon-edit pointer" title="improve answer" ng-click="editAnswerMode=true"></i>                     
                     </div>
-                    <div ng-show="editAnswerMode" ng-init="editedAnswer=answer">
+                    <div ng-show="editAnswerMode" ng-init="editedAnswer=answer.answer">
                       <textarea rows="3" class="span5 input-xlarge" ng-model="editedAnswer"></textarea>
         
                       <button class="btn btn-primary" ng-click="updateAnswer()">Update Answer</button>
@@ -66,7 +66,7 @@
                   <li ng-init="answerFormShowed=false" ng-hide="answerFormShowed"><a ng-click="answerFormShowed=true">add answer</a></li>
                   <li ng-show="answerFormShowed">
                     <form name="newAnswerForm">
-                      <textarea rows="3" class="span4 input-xlarge" placeholder="New Answer" ng-model="newAnswer" required></textarea>
+                      <textarea rows="3" class="span4 input-xlarge" placeholder="New Answer" ng-model="newAnswer.answer" required></textarea>
                       <br />
                       <button class="btn btn-primary" ng-click="submitAnswer()" ng-disabled="newAnswerForm.$invalid">Submit Answer</button>
                       <button class="btn" ng-click="answerFormShowed=false">Cancel</button>
