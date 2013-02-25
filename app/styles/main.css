@@ -20,9 +20,11 @@
 
 .css-treeview
 {
+  /*
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  */
 }
 
 .css-treeview input + label + ul

@@ -2,16 +2,11 @@
 
 bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ESV', 'Storage', 'Util', function($scope, Question, Answer, Bible, ESV, Storage, Util) {
   
-  //$scope.passage = ESV.query();
   $scope.bible = Bible.getBooks();
-  // default book and chapter
-  //$scope.book = {name: "John", chapter: 21};
-  //$scope.book = $scope.bible[42];
   
   var bookIndex = Util.findIndexByKeyValue($scope.bible, 'name', Storage.getObject('book'));
   $scope.book = $scope.bible[bookIndex];
   $scope.chapter = Storage.getObject('chapter');
-  console.log("storage book: " + $scope.book);
   if($scope.book === undefined) {
     $scope.book = $scope.bible[42];
     $scope.chapter = 1;
@@ -25,7 +20,7 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ES
   );
   */
   $scope.questions = Question.query({id: $scope.bookChapter});
-  //$scope.passage = ESV.get({passage:$scope.bookChapter});
+  $scope.passage = ESV.get({ref:$scope.bookChapter});
 
   $scope.startVerseNumber = function(question) {
     var verseNumber = null;
@@ -47,7 +42,7 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ES
     );
    */
     $scope.questions = Question.query({id: $scope.bookChapter});
-    //$scope.passage = ESV.get({passage:$scope.bookChapter});
+    $scope.passage = ESV.get({ref:$scope.bookChapter});
     Storage.saveObject($scope.chapter, 'chapter');
   };
 
