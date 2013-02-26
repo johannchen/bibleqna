@@ -64,13 +64,13 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ES
 
   $scope.submitQuestion = function() {
     if ($scope.verseNumbers === undefined) {
-      var newQuestion = $scope.bookChapter;
+      var newVerse = $scope.bookChapter + ":";
     } else {
-      var newQuestion = $scope.bookChapter + ":" + $scope.verseNumbers;
+      var newVerse = $scope.bookChapter + ":" + $scope.verseNumbers;
     }
     var newQuestion = {
-      question: newQuestion,
-      verse: $scope.verse
+      verse: newVerse,
+      question: $scope.question 
     }
     Question.save(newQuestion, function(question) {
       $scope.questions.unshift(question);
