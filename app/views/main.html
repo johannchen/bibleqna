@@ -11,6 +11,7 @@
   </div>
   <div class="span6">
     <button class="btn" ng-show="chapter" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
+    <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
   </div>
 </div>
 <div class="row">
@@ -27,6 +28,19 @@
         <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
         <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
         <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
+      </form>
+      </li>
+      <li class="span6 thumbnail" ng-show="sermonFormShowed">
+      <form name="newSermonForm">
+        <div class="controll-group">
+          {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
+        </div>
+        <input type="text" placeholder="title" ng-model="title" required>
+        <input type="text" placeholder="speaker" ng-model="speaker" required>
+        <input type="text" placeholder="link" ng-model="link" required>
+        <textarea rows="3" class="span5 input-xlarge" placeholder="summary" ng-model="summary"></textarea>
+        <button class="btn btn-primary" ng-click="submitSermon()" ng-disabled="newSermonForm.$invalid">Submit Sermon</button>
+        <button class="btn" ng-click="sermonFormShowed=false">Cancel</button>
       </form>
       </li>
       <li class="span6 thumbnail" ng-repeat="question in questions | orderBy:startVerseNumber">
