@@ -8,17 +8,17 @@
         <button class="btn" ng-click="nextChapter()" ng-hide="chapter==book.chapter">Next</button>
       </span>
     </form>
-  </div>
-  <div class="span6">
-    <button class="btn" ng-show="chapter" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
-    <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
-  </div>
-</div>
-<div class="row">
-  <div class="span6">
     <div ng-bind-html-unsafe="passage.esv"></div>
   </div>
   <div class="span6">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">Questions</a></li>
+      <li><a href="#">Commentaries</a></li>
+      <li><a href="#">Sermons</a></li>
+    </ul>
+    <button class="btn" ng-show="chapter" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
+    <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
+    <br>
     <ul class="thumbnails">
       <li class="span6 thumbnail" ng-show="questionFormShowed">
       <form name="newQuestionForm">
