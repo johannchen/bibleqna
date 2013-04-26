@@ -11,87 +11,89 @@
     <div ng-bind-html-unsafe="passage.esv"></div>
   </div>
   <div class="span6">
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#">Questions</a></li>
-      <li><a href="#">Commentaries</a></li>
-      <li><a href="#">Sermons</a></li>
-    </ul>
-    <button class="btn" ng-show="chapter" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
-    <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
-    <br>
-    <ul class="thumbnails">
-      <li class="span6 thumbnail" ng-show="questionFormShowed">
-      <form name="newQuestionForm">
-        <div class="controll-group">
-          {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
-        </div>
-        <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
-        <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
-        <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
-      </form>
-      </li>
-      <li class="span6 thumbnail" ng-show="sermonFormShowed">
-      <form name="newSermonForm">
-        <div class="controll-group">
-          {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
-        </div>
-        <input type="text" placeholder="title" ng-model="title" required>
-        <input type="text" placeholder="speaker" ng-model="speaker" required>
-        <input type="text" placeholder="link" ng-model="link" required>
-        <textarea rows="3" class="span5 input-xlarge" placeholder="summary" ng-model="summary"></textarea>
-        <button class="btn btn-primary" ng-click="submitSermon()" ng-disabled="newSermonForm.$invalid">Submit Sermon</button>
-        <button class="btn" ng-click="sermonFormShowed=false">Cancel</button>
-      </form>
-      </li>
-      <li class="span6 thumbnail" ng-repeat="question in questions | orderBy:startVerseNumber">
-        <div ng-init="editMode=false" ng-show="editMode">
-          <form name="editQustionForm" ng-init="editedQuestion=question.question">
-            <div class="controll-group" ng-init="editedVerse=question.verse">
-              <input type="text" ng-model="editedVerse" />
+    <tabs>
+      <pane title="Questions">
+        <ul class="thumbnails">          
+          <li class="thumbnail" ng-repeat="question in questions | orderBy:startVerseNumber">
+            <div ng-init="editMode=false" ng-show="editMode">
+              <form name="editQustionForm" ng-init="editedQuestion=question.question">
+                <div class="controll-group" ng-init="editedVerse=question.verse">
+                  <input type="text" ng-model="editedVerse" />
+                </div>
+                <textarea rows="3" class="span5 input-xlarge" ng-model="editedQuestion"></textarea>
+                <button class="btn btn-primary" ng-click="updateQuestion()">Update Question</button>
+                <button class="btn" ng-click="editMode=false">Cancel</button>
+              </form>
             </div>
-            <textarea rows="3" class="span5 input-xlarge" ng-model="editedQuestion"></textarea>
-            <button class="btn btn-primary" ng-click="updateQuestion()">Update Question</button>
-            <button class="btn" ng-click="editMode=false">Cancel</button>
-          </form>
-        </div>
-      <div class="css-treeview" ng-hide="editMode">
-        <ul>
-          <li>
-          <input type="checkbox" id="item-{{$index}}" />
-            <label for="item-{{$index}}">
-              {{question.verse}}<br />
-              {{question.question}}
-              <i class="icon-edit pointer" title="improve question" ng-click="editMode=true" ng-show="question.answers == undefined || question.answers.length == 0"></i>
-            </label>
-                <ul>
-                  <li ng-repeat="answer in question.answers">
-                    <div ng-hide="editAnswerMode">
-                      {{answer.answer}}
-                      <i class="icon-edit pointer" title="improve answer" ng-click="editAnswerMode=true"></i>                     
-                    </div>
-                    <div ng-show="editAnswerMode" ng-init="editedAnswer=answer.answer">
-                      <textarea rows="3" class="span5 input-xlarge" ng-model="editedAnswer"></textarea>
+            <div class="css-treeview" ng-hide="editMode">
+              <ul>
+                <li>
+                  <input type="checkbox" id="item-{{$index}}" />
+                  <label for="item-{{$index}}">
+                    {{question.verse}}<br />
+                    {{question.question}}
+                    <i class="icon-edit pointer" title="improve question" ng-click="editMode=true" ng-show="question.answers == undefined || question.answers.length == 0"></i>
+                  </label>
+                  <ul>
+                    <li ng-repeat="answer in question.answers">
+                      <div ng-hide="editAnswerMode">
+                        {{answer.answer}}
+                        <i class="icon-edit pointer" title="improve answer" ng-click="editAnswerMode=true"></i>                     
+                      </div>
+                      <div ng-show="editAnswerMode" ng-init="editedAnswer=answer.answer">
+                        <textarea rows="3" class="span5 input-xlarge" ng-model="editedAnswer"></textarea>
+
+                        <button class="btn btn-primary" ng-click="updateAnswer()">Update Answer</button>
+                        <button class="btn btn-danger" ng-click="removeAnswer()">Remove</button>
+                        <button class="btn" ng-click="editAnswerMode=false">Cancel</button>  
+                      </div>
+                    </li>
+                    <li ng-init="answerFormShowed=false" ng-hide="answerFormShowed"><a ng-click="answerFormShowed=true">add answer</a></li>
+                    <li ng-show="answerFormShowed">
+                      <form name="newAnswerForm">
+                        <textarea rows="3" class="span4 input-xlarge" placeholder="New Answer" ng-model="newAnswer.answer" required></textarea>
+                        <br />
+                        <button class="btn btn-primary" ng-click="submitAnswer()" ng-disabled="newAnswerForm.$invalid">Submit Answer</button>
+                        <button class="btn" ng-click="answerFormShowed=false">Cancel</button>
+                      </form>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </li>         
+        </ul>
+        <button class="btn" ng-show="chapter" ng-hide="questionFormShowed" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
         
-                      <button class="btn btn-primary" ng-click="updateAnswer()">Update Answer</button>
-                      <button class="btn btn-danger" ng-click="removeAnswer()">Remove</button>
-                      <button class="btn" ng-click="editAnswerMode=false">Cancel</button>  
-                    </div>
-                  </li>
-                  <li ng-init="answerFormShowed=false" ng-hide="answerFormShowed"><a ng-click="answerFormShowed=true">add answer</a></li>
-                  <li ng-show="answerFormShowed">
-                    <form name="newAnswerForm">
-                      <textarea rows="3" class="span4 input-xlarge" placeholder="New Answer" ng-model="newAnswer.answer" required></textarea>
-                      <br />
-                      <button class="btn btn-primary" ng-click="submitAnswer()" ng-disabled="newAnswerForm.$invalid">Submit Answer</button>
-                      <button class="btn" ng-click="answerFormShowed=false">Cancel</button>
-                    </form>
-                  </li>
-                </ul>
+            <form name="newQuestionForm" class="span5" ng-show="questionFormShowed">
+              <div class="controll-group">
+                {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
+              </div>
+              <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
+              <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
+              <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
+            </form>
+      </pane>
+      <pane title="Comentaries">
+      </pane>
+      <pane title="Sermons"> 
+        <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
+        <ul class="thumbnails">
+          <li class="span6 thumbnail" ng-show="sermonFormShowed">
+            <form name="newSermonForm">
+              <div class="controll-group">
+                {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
+              </div>
+              <input type="text" placeholder="title" ng-model="title" required>
+              <input type="text" placeholder="speaker" ng-model="speaker" required>
+              <input type="text" placeholder="link" ng-model="link" required>
+              <textarea rows="3" class="span5 input-xlarge" placeholder="summary" ng-model="summary"></textarea>
+              <button class="btn btn-primary" ng-click="submitSermon()" ng-disabled="newSermonForm.$invalid">Submit Sermon</button>
+              <button class="btn" ng-click="sermonFormShowed=false">Cancel</button>
+            </form>
           </li>
         </ul>
-      </div>
-      </li>
-      
-    </ul>
+      </pane>
+    </tabs>
   </div>
 </div>
