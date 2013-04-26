@@ -64,35 +64,40 @@
           </li>         
         </ul>
         <button class="btn" ng-show="chapter" ng-hide="questionFormShowed" ng-init="questionFormShowed=false" ng-click="questionFormShowed=true">New Question</button>
-        
-            <form name="newQuestionForm" class="span5" ng-show="questionFormShowed">
-              <div class="controll-group">
-                {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
-              </div>
-              <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
-              <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
-              <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
-            </form>
+        <form name="newQuestionForm" class="span5" ng-show="questionFormShowed">
+          <div class="controll-group">
+            {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
+          </div>
+          <textarea rows="3" class="span5 input-xlarge" placeholder="Question about the verses" ng-model="question" required></textarea>
+          <button class="btn btn-primary" ng-click="submitQuestion()" ng-disabled="newQuestionForm.$invalid">Submit Question</button>
+          <button class="btn" ng-click="questionFormShowed=false">Cancel</button>
+        </form>
       </pane>
-      <pane title="Comentaries">
+      <pane title="Commentaries">
+        <button class="btn" ng-show="chapter" ng-hide="commentaryFormShowed" ng-init="commentaryFormShowed=false" ng-click="commentaryFormShowed=true">New Commentary</button>
+        <form name="newCommentaryForm" ng-show="commentaryFormShowed">
+          <fieldset>
+            {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="commentary.verseNumbers" />        
+            <input type="text" class="span4" placeholder="source" ng-model="commentary.source" required>
+            <textarea rows="3" class="span5 input-xlarge" placeholder="commentary" ng-model="commentary.content"></textarea>
+            <button class="btn btn-primary" ng-click="submitCommentary()" ng-disabled="newCommentaryForm.$invalid">Submit Sermon</button>
+            <button class="btn" ng-click="commentaryFormShowed=false">Cancel</button>
+          </fieldset>
+        </form>
       </pane>
       <pane title="Sermons"> 
-        <button class="btn" ng-show="chapter" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
-        <ul class="thumbnails">
-          <li class="span6 thumbnail" ng-show="sermonFormShowed">
-            <form name="newSermonForm">
-              <div class="controll-group">
-                {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="verseNumbers" />
-              </div>
-              <input type="text" placeholder="title" ng-model="title" required>
-              <input type="text" placeholder="speaker" ng-model="speaker" required>
-              <input type="text" placeholder="link" ng-model="link" required>
-              <textarea rows="3" class="span5 input-xlarge" placeholder="summary" ng-model="summary"></textarea>
-              <button class="btn btn-primary" ng-click="submitSermon()" ng-disabled="newSermonForm.$invalid">Submit Sermon</button>
-              <button class="btn" ng-click="sermonFormShowed=false">Cancel</button>
-            </form>
-          </li>
-        </ul>
+        <button class="btn" ng-show="chapter" ng-hide="sermonFormShowed" ng-init="sermonFormShowed=false" ng-click="sermonFormShowed=true">New Sermon</button>
+        <form name="newSermonForm" ng-show="sermonFormShowed">
+          <fieldset>
+            {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="sermon.verseNumbers" />        
+            <input type="text" class="span4" placeholder="title" ng-model="sermon.title" required>
+            <input type="text" class="span4" placeholder="speaker" ng-model="sermon.speaker" required>
+            <input type="text" class="span4" placeholder="link" ng-model="sermon.link" required>
+            <textarea rows="3" class="span5 input-xlarge" placeholder="sermon summary" ng-model="sermon.summary"></textarea>
+            <button class="btn btn-primary" ng-click="submitSermon()" ng-disabled="newSermonForm.$invalid">Submit Sermon</button>
+            <button class="btn" ng-click="sermonFormShowed=false">Cancel</button>
+          </fieldset>
+        </form>        
       </pane>
     </tabs>
   </div>
