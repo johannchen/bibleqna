@@ -21,6 +21,7 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ES
   */
   $scope.questions = Question.query({id: $scope.bookChapter});
   $scope.passage = ESV.get({ref:$scope.bookChapter});
+  $scope.commentaries = [];
 
   $scope.startVerseNumber = function(question) {
     var verseNumber = null;
@@ -144,4 +145,27 @@ bibleqnaApp.controller('MainCtrl', ['$scope', 'Question', 'Answer', 'Bible', 'ES
     this.editAnswerMode = false;
   };
 
+  $scope.submitCommentary = function() {
+    if ($scope.commentaryVerseNumbers === undefined) {
+      var newVerse = $scope.bookChapter + ":";
+    } else {
+      var newVerse = $scope.bookChapter + ":" + $scope.commentaryVerseNumbers;
+    }
+    var newCommentary = {
+      verse: newVerse,
+      commentary: $scope.commentaryContent,
+      source: $scope.commentarySource 
+    }
+    console.log(newCommentary);
+    $scope.commentaries.unshift(newCommentary);
+    /*
+    Question.save(newCommentary, function(commentary) {
+      $scope.commentaries.unshift(commentary);
+    });
+*/
+$scope.commentaryVerseNumbers = "";
+$scope.commentaryContent = "";
+$scope.commentarySource = "";
+    $scope.commentaryFormShowed = false;
+  };
 }]);

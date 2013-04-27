@@ -74,13 +74,20 @@
         </form>
       </pane>
       <pane title="Commentaries">
+        <ul class="thumbnails">          
+          <li class="thumbnail" ng-repeat="commentary in commentaries | orderBy:startVerseNumber">
+            {{commentary.verse}}<br>
+            {{commentary.commentary}}<br>
+            {{commentary.source}}
+          </li>
+        </ul>
         <button class="btn" ng-show="chapter" ng-hide="commentaryFormShowed" ng-init="commentaryFormShowed=false" ng-click="commentaryFormShowed=true">New Commentary</button>
         <form name="newCommentaryForm" ng-show="commentaryFormShowed">
           <fieldset>
-            {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="commentary.verseNumbers" />        
-            <input type="text" class="span4" placeholder="source" ng-model="commentary.source" required>
-            <textarea rows="3" class="span5 input-xlarge" placeholder="commentary" ng-model="commentary.content"></textarea>
-            <button class="btn btn-primary" ng-click="submitCommentary()" ng-disabled="newCommentaryForm.$invalid">Submit Sermon</button>
+            {{bookChapter}}: <input type="text" placeholder="verse numbers (e.g. 1-5)" ng-model="commentaryVerseNumbers" />        
+            <input type="text" class="span4" placeholder="source" ng-model="commentarySource" required>
+            <textarea rows="3" class="span5 input-xlarge" placeholder="commentary" ng-model="commentaryContent"></textarea>
+            <button class="btn btn-primary" ng-click="submitCommentary()" ng-disabled="newCommentaryForm.$invalid">Submit Commentary</button>
             <button class="btn" ng-click="commentaryFormShowed=false">Cancel</button>
           </fieldset>
         </form>
